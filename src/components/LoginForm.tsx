@@ -1,34 +1,51 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useNavigate } from "react-router"
-import { User } from "lucide-react"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { dummyCustomers } from "../lib/dummy-data"
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { User } from "lucide-react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+// import { dummyCustomers } from "../lib/dummy-data";
 
 export function LoginForm() {
-  const [customerId, setCustomerId] = useState("")
-  const [error, setError] = useState("")
-  const navigate = useNavigate()
+  const [customerID, setCustomerID] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
 
-    // Check if customer ID exists in our dummy data
-    const customer = dummyCustomers.find((c) => c.id === customerId)
+    try {
+      const response = await fetch(
+        "https://bank-app-login.onrender.com/users/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ customerID }),
+        }
+      );
 
-    if (customer) {
-      // Store customer info in sessionStorage for the OTP page
-      sessionStorage.setItem("currentCustomer", JSON.stringify(customer))
-      navigate("/verify-otp")
-    } else {
-      setError("The Customer ID you entered is incorrect.")
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store user data in sessionStorage or localStorage
+        sessionStorage.setItem("currentCustomer", JSON.stringify(data.user));
+        sessionStorage.setItem("token", data.token); // Store token for authentication
+
+        navigate("/verify-otp"); // Redirect to OTP verification page
+      } else {
+        setError(data.msg); // Show error message
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Something went wrong. Please try again.");
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -40,18 +57,24 @@ export function LoginForm() {
           type="text"
           placeholder="ENTER CUSTOMER ID"
           className="pl-10"
-          value={customerId}
-          onChange={(e) => setCustomerId(e.target.value)}
+          value={customerID}
+          onChange={(e) => setCustomerID(e.target.value)}
           required
         />
       </div>
 
-      {error && <p className="mb-4 text-sm text-[#E32213] font-bold bg-[#FBE8E7] p-2 rounded-md">{error}</p>}
+      {error && (
+        <p className="mb-4 text-sm text-[#E32213] font-bold bg-[#FBE8E7] p-2 rounded-md">
+          {error}
+        </p>
+      )}
 
-      <Button type="submit" className="w-full bg-[#E32213] hover:bg-red-700 text-white">
+      <Button
+        type="submit"
+        className="w-full bg-[#E32213] hover:bg-red-700 text-white cursor-pointer"
+      >
         Continue
       </Button>
     </form>
-  )
+  );
 }
-
