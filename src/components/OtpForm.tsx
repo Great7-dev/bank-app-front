@@ -48,7 +48,7 @@ export function OtpForm() {
         <Input
           type="text"
           placeholder="ENTER OTP"
-          className="text-center"
+          className="text-center rounded-[10px]"
           value={otp}
           onChange={(e) => setOtp(e.target.value)}
           maxLength={6}
@@ -58,7 +58,7 @@ export function OtpForm() {
 
       {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
 
-      <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white">
+      <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white rounded-[40px]">
         Login
       </Button>
     </form>
