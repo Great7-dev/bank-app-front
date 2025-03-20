@@ -60,7 +60,7 @@ export function OtpForm() {
 
       <Button
         type="submit"
-        className="w-full bg-red-600 hover:bg-red-700 text-white rounded-[40px]"
+        className="w-full bg-[#E32213] hover:bg-red-700 text-white cursor-pointer"
       >
         Login
       </Button>

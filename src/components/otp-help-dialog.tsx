@@ -39,7 +39,7 @@ export function OtpHelpDialog() {
               href="mailto:customercare@iib-ag.com"
               className="text-[#E32213] hover:underline"
             >
-              customercare@iib-ag.com
+              customercare@int-i-ag.com
             </a>
           </p>
         </div>
