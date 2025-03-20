@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/offshorebanking/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/verify-otp" element={<VerifyOtpPage />} />
       </Routes>
     </>
